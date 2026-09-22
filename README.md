@@ -38,7 +38,7 @@ chmod +x PodSetup.sh
 ```bash
 ./PodSetup.sh
 ```
-![SSH Manager Main Menu](<img width="593" height="339" alt="image" src="https://github.com/user-attachments/assets/e29fbc5b-0847-4d86-9056-37782336130d" />)
+![SSH Manager Main Menu]<img width="593" height="339" alt="image" src="https://github.com/user-attachments/assets/e29fbc5b-0847-4d86-9056-37782336130d" />
 
 ---
 
@@ -54,7 +54,7 @@ Installs `openssh-server` if it is not already installed and starts `sshd`.
 
 The script also creates `/run/sshd` when required.
 
-![Install SSH Server](<img width="1835" height="653" alt="image" src="https://github.com/user-attachments/assets/03e55951-958f-42e9-bc22-f19cff9b83c0" />)
+![Install SSH Server]<img width="1835" height="653" alt="image" src="https://github.com/user-attachments/assets/03e55951-958f-42e9-bc22-f19cff9b83c0" />
 
 ---
 
@@ -84,7 +84,7 @@ Removes authorized SSH keys from the root account and user home directories.
 [3] Remove authorized SSH keys
 ```
 
-![Remove SSH Keys](<img width="592" height="225" alt="image" src="https://github.com/user-attachments/assets/40bcb394-70dc-418a-8ee6-1751e72a9a31" />)
+![Remove SSH Keys]<img width="592" height="225" alt="image" src="https://github.com/user-attachments/assets/40bcb394-70dc-418a-8ee6-1751e72a9a31" />
 
 ---
 
@@ -96,8 +96,7 @@ Stops `sshd` and removes the `openssh-server` package.
 [4] Remove SSH server
 ```
 
-![Remove SSH Server](<img width="1841" height="424" alt="image" src="https://github.com/user-attachments/assets/00f78d0e-04c9-4f62-9a0a-033384ae8f2a" />
-)
+![Remove SSH Server]<img width="1841" height="424" alt="image" src="https://github.com/user-attachments/assets/00f78d0e-04c9-4f62-9a0a-033384ae8f2a" />
 
 ---
 
@@ -121,8 +120,7 @@ The following packages are installed:
 
 The manager also verifies that the installed commands are available after installation.
 
-![Install Utility / Network Tools](<img width="1857" height="521" alt="image" src="https://github.com/user-attachments/assets/1d84529f-63dd-4640-b9ee-a6a26b45bf42" />
-)
+![Install Utility / Network Tools]<img width="1857" height="521" alt="image" src="https://github.com/user-attachments/assets/1d84529f-63dd-4640-b9ee-a6a26b45bf42" />
 
 ---
 
@@ -159,7 +157,7 @@ RUNPOD_TCP_PORT_22
 
 This means the displayed connection information automatically reflects the Pod's currently assigned IP address and SSH port.
 
-![RunPod Connection Details](<img width="1620" height="971" alt="image" src="https://github.com/user-attachments/assets/0525f68f-6762-4063-bf90-9ad89dedeecc" />)
+![RunPod Connection Details]<img width="1620" height="971" alt="image" src="https://github.com/user-attachments/assets/0525f68f-6762-4063-bf90-9ad89dedeecc" />
 
 ---
 
