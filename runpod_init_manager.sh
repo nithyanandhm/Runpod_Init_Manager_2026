@@ -45,9 +45,11 @@ show_connection() {
     echo
     echo -e "  ${DIM}SSH command:${RESET}"
     echo
-    echo -e "  ${YELLOW}ssh -i ~/.ssh/id_ed25519_runpod \\${RESET}"
-    echo -e "  ${YELLOW}    -p ${RUNPOD_TCP_PORT_22:-<SSH_PORT>} \\${RESET}"
-    echo -e "  ${YELLOW}    root@${RUNPOD_PUBLIC_IP:-<PUBLIC_IP>}${RESET}"
+
+    printf '%b\n' "  ${YELLOW}ssh -i ~/.ssh/id_ed25519_runpod \\${RESET}"
+    printf '%b\n' "  ${YELLOW}    -p ${RUNPOD_TCP_PORT_22:-<SSH_PORT>} \\${RESET}"
+    printf '%b\n' "  ${YELLOW}    root@${RUNPOD_PUBLIC_IP:-<PUBLIC_IP>}${RESET}"
+
     echo
 
     pause
@@ -82,7 +84,7 @@ add_key() {
 
     echo -e "${BOLD}Add SSH Public Key${RESET}"
     echo
-    echo -e "${DIM}Paste the complete ssh-ed25519 public key below.${RESET}"
+    echo -e "${DIM}Paste the complete SSH public key below.${RESET}"
     echo
 
     printf "${CYAN}Public key:${RESET} "
@@ -119,6 +121,7 @@ clean_keys() {
 
     echo -e "${BOLD}Remove Authorized SSH Keys${RESET}"
     echo
+
     echo -e "${YELLOW}→${RESET} Removing authorized_keys files..."
 
     rm -f /root/.ssh/authorized_keys
@@ -145,12 +148,14 @@ remove_sshd() {
     echo
 
     echo -e "${YELLOW}→${RESET} Stopping sshd..."
+
     pkill -x sshd 2>/dev/null || true
 
     if dpkg-query -W -f='${Status}' openssh-server 2>/dev/null |
        grep -q "install ok installed"; then
 
         echo -e "${YELLOW}→${RESET} Removing openssh-server..."
+
         DEBIAN_FRONTEND=noninteractive apt-get purge -y openssh-server
         apt-get autoremove -y
     else
@@ -191,11 +196,21 @@ while true; do
     read -r -p "$(echo -e "${BOLD}Select an option [1-6]:${RESET} ")" OPTION < /dev/tty
 
     case "$OPTION" in
-        1) install_sshd ;;
-        2) add_key ;;
-        3) clean_keys ;;
-        4) remove_sshd ;;
-        5) show_connection ;;
+        1)
+            install_sshd
+            ;;
+        2)
+            add_key
+            ;;
+        3)
+            clean_keys
+            ;;
+        4)
+            remove_sshd
+            ;;
+        5)
+            show_connection
+            ;;
         6)
             echo
             echo -e "${GREEN}Goodbye.${RESET}"
