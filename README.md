@@ -159,6 +159,33 @@ This means the displayed connection information automatically reflects the Pod's
 
 ![RunPod Connection Details](screenshots/connection-details.png)
 
+Successful connection should result in the following message on the connecting client window:
+
+```bash
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '[xxx.xxx.xxx.xx]:xxxxx' (ED25519) to the list of known hosts.
+Welcome to Ubuntu 24.04.5 LTS (GNU/Linux 6.8.0-124-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+This system has been minimized by removing packages and content that are
+not required on a system that users do not log into.
+
+To restore this content, you can run the 'unminimize' command.
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+root@pod_id:~# 
+
+```
+
 ---
 
 #### Exit:
