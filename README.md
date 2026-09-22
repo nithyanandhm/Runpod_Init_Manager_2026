@@ -38,7 +38,7 @@ chmod +x PodSetup.sh
 ```bash
 ./PodSetup.sh
 ```
-<img width="593" height="339" alt="image" src="https://github.com/user-attachments/assets/e29fbc5b-0847-4d86-9056-37782336130d" />
+![SSH Manager Main Menu](<img width="593" height="339" alt="image" src="https://github.com/user-attachments/assets/e29fbc5b-0847-4d86-9056-37782336130d" />)
 
 ---
 
@@ -54,7 +54,7 @@ Installs `openssh-server` if it is not already installed and starts `sshd`.
 
 The script also creates `/run/sshd` when required.
 
-![Install SSH Server]<img width="1835" height="653" alt="image" src="https://github.com/user-attachments/assets/03e55951-958f-42e9-bc22-f19cff9b83c0" />
+![Install SSH Server](<img width="1835" height="653" alt="image" src="https://github.com/user-attachments/assets/03e55951-958f-42e9-bc22-f19cff9b83c0" />)
 
 ---
 
@@ -72,7 +72,7 @@ Adds an SSH public key to:
 
 The script checks whether the key already exists before adding it.
 
-![Add SSH Key](screenshots/<img width="592" height="183" alt="image" src="https://github.com/user-attachments/assets/794c4ba0-00e2-43ce-8c07-30467b0e83d9" />)
+![Add SSH Key](<img width="592" height="183" alt="image" src="https://github.com/user-attachments/assets/794c4ba0-00e2-43ce-8c07-30467b0e83d9" />)
 
 ---
 
@@ -84,7 +84,7 @@ Removes authorized SSH keys from the root account and user home directories.
 [3] Remove authorized SSH keys
 ```
 
-![Remove SSH Keys](screenshots/<img width="592" height="225" alt="image" src="https://github.com/user-attachments/assets/40bcb394-70dc-418a-8ee6-1751e72a9a31" />)
+![Remove SSH Keys](<img width="592" height="225" alt="image" src="https://github.com/user-attachments/assets/40bcb394-70dc-418a-8ee6-1751e72a9a31" />)
 
 ---
 
@@ -159,7 +159,7 @@ RUNPOD_TCP_PORT_22
 
 This means the displayed connection information automatically reflects the Pod's currently assigned IP address and SSH port.
 
-![RunPod Connection Details](screenshots/connection-details.png)
+![RunPod Connection Details](<img width="1620" height="971" alt="image" src="https://github.com/user-attachments/assets/0525f68f-6762-4063-bf90-9ad89dedeecc" />)
 
 ---
 
