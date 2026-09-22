@@ -72,7 +72,7 @@ Adds an SSH public key to:
 
 The script checks whether the key already exists before adding it.
 
-![Add SSH Key](<img width="592" height="183" alt="image" src="https://github.com/user-attachments/assets/794c4ba0-00e2-43ce-8c07-30467b0e83d9" />)
+![Add SSH Key]<img width="592" height="183" alt="image" src="https://github.com/user-attachments/assets/794c4ba0-00e2-43ce-8c07-30467b0e83d9" />
 
 ---
 
