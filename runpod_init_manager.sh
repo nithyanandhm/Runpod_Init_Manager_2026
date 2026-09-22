@@ -48,7 +48,6 @@ show_connection() {
     printf '%s\n' "  ${DIM}SSH command:${RESET}"
     echo
 
-    # Plain text intentionally — easy to copy/paste
     printf '%s\n' "  ssh -i ~/.ssh/id_ed25519_runpod \\"
     printf '%s\n' "      -p ${RUNPOD_TCP_PORT_22:-<SSH_PORT>} \\"
     printf '%s\n' "      root@${RUNPOD_PUBLIC_IP:-<PUBLIC_IP>}"
@@ -193,6 +192,44 @@ remove_sshd() {
 }
 
 # ─────────────────────────────────────────────────────────────
+# Utility / Network Tools
+# ─────────────────────────────────────────────────────────────
+
+install_utilities() {
+    header
+
+    printf '%s\n' "${BOLD}Install Utility / Network Tools${RESET}"
+    echo
+
+    printf '%s\n' "${YELLOW}→${RESET} Installing utility packages..."
+    echo
+
+    apt-get update
+
+    DEBIAN_FRONTEND=noninteractive apt-get install -y \
+        nano \
+        nmap \
+        iputils-ping \
+        openssh-client
+
+    echo
+
+    printf '%s\n' "${GREEN}✓${RESET} Utility installation complete."
+    echo
+
+    printf '%s\n' "  nano : $(command -v nano || echo 'not found')"
+    printf '%s\n' "  nmap : $(command -v nmap || echo 'not found')"
+    printf '%s\n' "  ping : $(command -v ping || echo 'not found')"
+    printf '%s\n' "  ssh  : $(command -v ssh || echo 'not found')"
+    printf '%s\n' "  scp  : $(command -v scp || echo 'not found')"
+    printf '%s\n' "  sftp : $(command -v sftp || echo 'not found')"
+
+    echo
+
+    pause
+}
+
+# ─────────────────────────────────────────────────────────────
 # Main Menu
 # ─────────────────────────────────────────────────────────────
 
@@ -207,8 +244,9 @@ while true; do
     printf '%s\n' "  ${CYAN}[2]${RESET}  Add SSH public key"
     printf '%s\n' "  ${CYAN}[3]${RESET}  Remove authorized SSH keys"
     printf '%s\n' "  ${CYAN}[4]${RESET}  Remove SSH server"
-    printf '%s\n' "  ${CYAN}[5]${RESET}  Show RunPod connection details"
-    printf '%s\n' "  ${CYAN}[6]${RESET}  Exit"
+    printf '%s\n' "  ${CYAN}[5]${RESET}  Install utility / network tools"
+    printf '%s\n' "  ${CYAN}[6]${RESET}  Show RunPod connection details"
+    printf '%s\n' "  ${CYAN}[7]${RESET}  Exit"
 
     echo
 
@@ -216,7 +254,7 @@ while true; do
 
     echo
 
-    printf '%s' "${BOLD}Select an option [1-6]:${RESET} "
+    printf '%s' "${BOLD}Select an option [1-7]:${RESET} "
     read -r OPTION < /dev/tty
 
     case "$OPTION" in
@@ -238,10 +276,14 @@ while true; do
             ;;
 
         5)
-            show_connection
+            install_utilities
             ;;
 
         6)
+            show_connection
+            ;;
+
+        7)
             echo
             printf '%s\n' "${GREEN}Goodbye.${RESET}"
             echo
