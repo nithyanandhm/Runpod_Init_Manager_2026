@@ -5,16 +5,16 @@ set -e
 # Colors
 # ─────────────────────────────────────────────────────────────
 
-BOLD='\033[1m'
-DIM='\033[2m'
-RESET='\033[0m'
+BOLD=$'\033[1m'
+DIM=$'\033[2m'
+RESET=$'\033[0m'
 
-CYAN='\033[36m'
-GREEN='\033[32m'
-YELLOW='\033[33m'
-RED='\033[31m'
-BLUE='\033[34m'
-WHITE='\033[97m'
+CYAN=$'\033[36m'
+GREEN=$'\033[32m'
+YELLOW=$'\033[33m'
+RED=$'\033[31m'
+BLUE=$'\033[34m'
+WHITE=$'\033[97m'
 
 # ─────────────────────────────────────────────────────────────
 # Helpers
@@ -28,27 +28,27 @@ pause() {
 header() {
     clear
     echo
-    echo -e "${CYAN}${BOLD}╔══════════════════════════════════════════════════════════╗${RESET}"
-    echo -e "${CYAN}${BOLD}║${WHITE}                  RUNPOD SSH MANAGER                    ${CYAN}║${RESET}"
-    echo -e "${CYAN}${BOLD}╚══════════════════════════════════════════════════════════╝${RESET}"
+    printf '%s\n' "${CYAN}${BOLD}╔══════════════════════════════════════════════════════════╗${RESET}"
+    printf '%s\n' "${CYAN}${BOLD}║${WHITE}                  RUNPOD SSH MANAGER                    ${CYAN}║${RESET}"
+    printf '%s\n' "${CYAN}${BOLD}╚══════════════════════════════════════════════════════════╝${RESET}"
     echo
 }
 
 show_connection() {
     header
 
-    echo -e "${BOLD}RunPod Connection${RESET}"
+    printf '%s\n' "${BOLD}RunPod Connection${RESET}"
     echo
-    echo -e "  ${DIM}Public IP${RESET}     : ${GREEN}${RUNPOD_PUBLIC_IP:-unknown}${RESET}"
-    echo -e "  ${DIM}SSH Port${RESET}      : ${GREEN}${RUNPOD_TCP_PORT_22:-unknown}${RESET}"
-    echo -e "  ${DIM}Ollama Port${RESET}   : ${GREEN}11434${RESET}"
+    printf '%s\n' "  ${DIM}Public IP${RESET}     : ${GREEN}${RUNPOD_PUBLIC_IP:-unknown}${RESET}"
+    printf '%s\n' "  ${DIM}SSH Port${RESET}      : ${GREEN}${RUNPOD_TCP_PORT_22:-unknown}${RESET}"
+    printf '%s\n' "  ${DIM}Ollama Port${RESET}   : ${GREEN}11434${RESET}"
     echo
-    echo -e "  ${DIM}SSH command:${RESET}"
+    printf '%s\n' "  ${DIM}SSH command:${RESET}"
     echo
 
-    printf '%b\n' "  ${YELLOW}ssh -i ~/.ssh/id_ed25519_runpod \\${RESET}"
-    printf '%b\n' "  ${YELLOW}    -p ${RUNPOD_TCP_PORT_22:-<SSH_PORT>} \\${RESET}"
-    printf '%b\n' "  ${YELLOW}    root@${RUNPOD_PUBLIC_IP:-<PUBLIC_IP>}${RESET}"
+    printf '%s\n' "  ${YELLOW}ssh -i ~/.ssh/id_ed25519_runpod \\${RESET}"
+    printf '%s\n' "  ${YELLOW}    -p ${RUNPOD_TCP_PORT_22:-<SSH_PORT>} \\${RESET}"
+    printf '%s\n' "  ${YELLOW}    root@${RUNPOD_PUBLIC_IP:-<PUBLIC_IP>}${RESET}"
 
     echo
 
@@ -58,22 +58,22 @@ show_connection() {
 install_sshd() {
     header
 
-    echo -e "${BOLD}Install / Start SSH Server${RESET}"
+    printf '%s\n' "${BOLD}Install / Start SSH Server${RESET}"
     echo
 
     if command -v sshd >/dev/null 2>&1; then
-        echo -e "${GREEN}✓${RESET} openssh-server is already installed."
+        printf '%s\n' "${GREEN}✓${RESET} openssh-server is already installed."
     else
-        echo -e "${YELLOW}→${RESET} Installing openssh-server..."
+        printf '%s\n' "${YELLOW}→${RESET} Installing openssh-server..."
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-server
-        echo -e "${GREEN}✓${RESET} openssh-server installed."
+        printf '%s\n' "${GREEN}✓${RESET} openssh-server installed."
     fi
 
     mkdir -p /run/sshd
     /usr/sbin/sshd
 
-    echo -e "${GREEN}✓${RESET} sshd started."
+    printf '%s\n' "${GREEN}✓${RESET} sshd started."
     echo
 
     pause
@@ -82,17 +82,17 @@ install_sshd() {
 add_key() {
     header
 
-    echo -e "${BOLD}Add SSH Public Key${RESET}"
+    printf '%s\n' "${BOLD}Add SSH Public Key${RESET}"
     echo
-    echo -e "${DIM}Paste the complete SSH public key below.${RESET}"
+    printf '%s\n' "${DIM}Paste the complete SSH public key below.${RESET}"
     echo
 
-    printf "${CYAN}Public key:${RESET} "
+    printf '%s' "${CYAN}Public key:${RESET} "
     read -r PUBKEY < /dev/tty
 
     if [ -z "$PUBKEY" ]; then
         echo
-        echo -e "${RED}✗ No public key supplied.${RESET}"
+        printf '%s\n' "${RED}✗ No public key supplied.${RESET}"
         pause
         return 1
     fi
@@ -105,11 +105,11 @@ add_key() {
 
     if grep -qxF "$PUBKEY" /root/.ssh/authorized_keys 2>/dev/null; then
         echo
-        echo -e "${YELLOW}!${RESET} Key already exists."
+        printf '%s\n' "${YELLOW}!${RESET} Key already exists."
     else
         echo "$PUBKEY" >> /root/.ssh/authorized_keys
         echo
-        echo -e "${GREEN}✓${RESET} SSH public key added."
+        printf '%s\n' "${GREEN}✓${RESET} SSH public key added."
     fi
 
     echo
@@ -119,10 +119,10 @@ add_key() {
 clean_keys() {
     header
 
-    echo -e "${BOLD}Remove Authorized SSH Keys${RESET}"
+    printf '%s\n' "${BOLD}Remove Authorized SSH Keys${RESET}"
     echo
 
-    echo -e "${YELLOW}→${RESET} Removing authorized_keys files..."
+    printf '%s\n' "${YELLOW}→${RESET} Removing authorized_keys files..."
 
     rm -f /root/.ssh/authorized_keys
     find /home -type f -name authorized_keys -delete 2>/dev/null || true
@@ -132,10 +132,10 @@ clean_keys() {
     echo
 
     if [ -n "$FOUND" ]; then
-        echo -e "${RED}✗ WARNING: authorized_keys files still exist:${RESET}"
+        printf '%s\n' "${RED}✗ WARNING: authorized_keys files still exist:${RESET}"
         echo "$FOUND"
     else
-        echo -e "${GREEN}✓ All authorized SSH keys cleaned.${RESET}"
+        printf '%s\n' "${GREEN}✓ All authorized SSH keys cleaned.${RESET}"
     fi
 
     pause
@@ -144,30 +144,30 @@ clean_keys() {
 remove_sshd() {
     header
 
-    echo -e "${BOLD}Remove SSH Server${RESET}"
+    printf '%s\n' "${BOLD}Remove SSH Server${RESET}"
     echo
 
-    echo -e "${YELLOW}→${RESET} Stopping sshd..."
+    printf '%s\n' "${YELLOW}→${RESET} Stopping sshd..."
 
     pkill -x sshd 2>/dev/null || true
 
     if dpkg-query -W -f='${Status}' openssh-server 2>/dev/null |
        grep -q "install ok installed"; then
 
-        echo -e "${YELLOW}→${RESET} Removing openssh-server..."
+        printf '%s\n' "${YELLOW}→${RESET} Removing openssh-server..."
 
         DEBIAN_FRONTEND=noninteractive apt-get purge -y openssh-server
         apt-get autoremove -y
     else
-        echo -e "${DIM}openssh-server is not installed.${RESET}"
+        printf '%s\n' "${DIM}openssh-server is not installed.${RESET}"
     fi
 
     echo
 
     if command -v sshd >/dev/null 2>&1; then
-        echo -e "${RED}✗ WARNING: sshd is still installed.${RESET}"
+        printf '%s\n' "${RED}✗ WARNING: sshd is still installed.${RESET}"
     else
-        echo -e "${GREEN}✓ SSH server removed.${RESET}"
+        printf '%s\n' "${GREEN}✓ SSH server removed.${RESET}"
     fi
 
     pause
@@ -181,19 +181,20 @@ while true; do
 
     header
 
-    echo -e "${BOLD}SSH Configuration${RESET}"
+    printf '%s\n' "${BOLD}SSH Configuration${RESET}"
     echo
-    echo -e "  ${CYAN}[1]${RESET}  Install / start SSH server"
-    echo -e "  ${CYAN}[2]${RESET}  Add SSH public key"
-    echo -e "  ${CYAN}[3]${RESET}  Remove authorized SSH keys"
-    echo -e "  ${CYAN}[4]${RESET}  Remove SSH server"
-    echo -e "  ${CYAN}[5]${RESET}  Show RunPod connection details"
-    echo -e "  ${CYAN}[6]${RESET}  Exit"
+    printf '%s\n' "  ${CYAN}[1]${RESET}  Install / start SSH server"
+    printf '%s\n' "  ${CYAN}[2]${RESET}  Add SSH public key"
+    printf '%s\n' "  ${CYAN}[3]${RESET}  Remove authorized SSH keys"
+    printf '%s\n' "  ${CYAN}[4]${RESET}  Remove SSH server"
+    printf '%s\n' "  ${CYAN}[5]${RESET}  Show RunPod connection details"
+    printf '%s\n' "  ${CYAN}[6]${RESET}  Exit"
     echo
-    echo -e "${DIM}────────────────────────────────────────────────────────────${RESET}"
+    printf '%s\n' "${DIM}────────────────────────────────────────────────────────────${RESET}"
     echo
 
-    read -r -p "$(echo -e "${BOLD}Select an option [1-6]:${RESET} ")" OPTION < /dev/tty
+    printf '%s' "${BOLD}Select an option [1-6]:${RESET} "
+    read -r OPTION < /dev/tty
 
     case "$OPTION" in
         1)
@@ -213,13 +214,13 @@ while true; do
             ;;
         6)
             echo
-            echo -e "${GREEN}Goodbye.${RESET}"
+            printf '%s\n' "${GREEN}Goodbye.${RESET}"
             echo
             exit 0
             ;;
         *)
             echo
-            echo -e "${RED}✗ Invalid option.${RESET}"
+            printf '%s\n' "${RED}✗ Invalid option.${RESET}"
             sleep 1
             ;;
     esac
