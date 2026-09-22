@@ -211,6 +211,7 @@ install_utilities() {
         nmap \
         iputils-ping \
         openssh-client
+        zstd
 
     echo
 
@@ -223,6 +224,7 @@ install_utilities() {
     printf '%s\n' "  ssh  : $(command -v ssh || echo 'not found')"
     printf '%s\n' "  scp  : $(command -v scp || echo 'not found')"
     printf '%s\n' "  sftp : $(command -v sftp || echo 'not found')"
+    printf '%s\n' "  zstd : $(command -v zstd || echo 'not found')"
 
     echo
 
