@@ -120,7 +120,7 @@ The following packages are installed:
 
 The manager also verifies that the installed commands are available after installation.
 
-![Install Utility / Network Tools](screenshot/install-utilities.png)
+![Install Utility / Network Tools](screenshots/install-utilities.png)
 
 ---
 
