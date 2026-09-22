@@ -210,7 +210,7 @@ install_utilities() {
         nano \
         nmap \
         iputils-ping \
-        openssh-client
+        openssh-client \
         zstd
 
     echo
