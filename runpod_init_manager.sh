@@ -39,16 +39,19 @@ show_connection() {
 
     printf '%s\n' "${BOLD}RunPod Connection${RESET}"
     echo
+
     printf '%s\n' "  ${DIM}Public IP${RESET}     : ${GREEN}${RUNPOD_PUBLIC_IP:-unknown}${RESET}"
     printf '%s\n' "  ${DIM}SSH Port${RESET}      : ${GREEN}${RUNPOD_TCP_PORT_22:-unknown}${RESET}"
     printf '%s\n' "  ${DIM}Ollama Port${RESET}   : ${GREEN}11434${RESET}"
+
     echo
     printf '%s\n' "  ${DIM}SSH command:${RESET}"
     echo
 
-    printf '%s\n' "  ${YELLOW}ssh -i ~/.ssh/id_ed25519_runpod \\${RESET}"
-    printf '%s\n' "  ${YELLOW}    -p ${RUNPOD_TCP_PORT_22:-<SSH_PORT>} \\${RESET}"
-    printf '%s\n' "  ${YELLOW}    root@${RUNPOD_PUBLIC_IP:-<PUBLIC_IP>}${RESET}"
+    # Plain text intentionally — easy to copy/paste
+    printf '%s\n' "  ssh -i ~/.ssh/id_ed25519_runpod \\"
+    printf '%s\n' "      -p ${RUNPOD_TCP_PORT_22:-<SSH_PORT>} \\"
+    printf '%s\n' "      root@${RUNPOD_PUBLIC_IP:-<PUBLIC_IP>}"
 
     echo
 
@@ -65,12 +68,17 @@ install_sshd() {
         printf '%s\n' "${GREEN}✓${RESET} openssh-server is already installed."
     else
         printf '%s\n' "${YELLOW}→${RESET} Installing openssh-server..."
+
         apt-get update
-        DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-server
+
+        DEBIAN_FRONTEND=noninteractive \
+            apt-get install -y openssh-server
+
         printf '%s\n' "${GREEN}✓${RESET} openssh-server installed."
     fi
 
     mkdir -p /run/sshd
+
     /usr/sbin/sshd
 
     printf '%s\n' "${GREEN}✓${RESET} sshd started."
@@ -108,11 +116,13 @@ add_key() {
         printf '%s\n' "${YELLOW}!${RESET} Key already exists."
     else
         echo "$PUBKEY" >> /root/.ssh/authorized_keys
+
         echo
         printf '%s\n' "${GREEN}✓${RESET} SSH public key added."
     fi
 
     echo
+
     pause
 }
 
@@ -125,9 +135,16 @@ clean_keys() {
     printf '%s\n' "${YELLOW}→${RESET} Removing authorized_keys files..."
 
     rm -f /root/.ssh/authorized_keys
-    find /home -type f -name authorized_keys -delete 2>/dev/null || true
 
-    FOUND=$(find /root /home -type f -name authorized_keys 2>/dev/null || true)
+    find /home \
+        -type f \
+        -name authorized_keys \
+        -delete 2>/dev/null || true
+
+    FOUND=$(find /root /home \
+        -type f \
+        -name authorized_keys \
+        2>/dev/null || true)
 
     echo
 
@@ -152,11 +169,13 @@ remove_sshd() {
     pkill -x sshd 2>/dev/null || true
 
     if dpkg-query -W -f='${Status}' openssh-server 2>/dev/null |
-       grep -q "install ok installed"; then
+        grep -q "install ok installed"; then
 
         printf '%s\n' "${YELLOW}→${RESET} Removing openssh-server..."
 
-        DEBIAN_FRONTEND=noninteractive apt-get purge -y openssh-server
+        DEBIAN_FRONTEND=noninteractive \
+            apt-get purge -y openssh-server
+
         apt-get autoremove -y
     else
         printf '%s\n' "${DIM}openssh-server is not installed.${RESET}"
@@ -183,46 +202,58 @@ while true; do
 
     printf '%s\n' "${BOLD}SSH Configuration${RESET}"
     echo
+
     printf '%s\n' "  ${CYAN}[1]${RESET}  Install / start SSH server"
     printf '%s\n' "  ${CYAN}[2]${RESET}  Add SSH public key"
     printf '%s\n' "  ${CYAN}[3]${RESET}  Remove authorized SSH keys"
     printf '%s\n' "  ${CYAN}[4]${RESET}  Remove SSH server"
     printf '%s\n' "  ${CYAN}[5]${RESET}  Show RunPod connection details"
     printf '%s\n' "  ${CYAN}[6]${RESET}  Exit"
+
     echo
+
     printf '%s\n' "${DIM}────────────────────────────────────────────────────────────${RESET}"
+
     echo
 
     printf '%s' "${BOLD}Select an option [1-6]:${RESET} "
     read -r OPTION < /dev/tty
 
     case "$OPTION" in
+
         1)
             install_sshd
             ;;
+
         2)
             add_key
             ;;
+
         3)
             clean_keys
             ;;
+
         4)
             remove_sshd
             ;;
+
         5)
             show_connection
             ;;
+
         6)
             echo
             printf '%s\n' "${GREEN}Goodbye.${RESET}"
             echo
             exit 0
             ;;
+
         *)
             echo
             printf '%s\n' "${RED}✗ Invalid option.${RESET}"
             sleep 1
             ;;
+
     esac
 
 done
